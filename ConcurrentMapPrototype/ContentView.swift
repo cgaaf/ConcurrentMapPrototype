@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    let array = [1, 2, 3, 4, 5]
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        Button("Run Code") {
+            async {
+                let mapped = await array.concurrentMap2 { int in
+                    
+                }
+                print(mapped)
+            }
+        }
+        .padding()
     }
 }
 
