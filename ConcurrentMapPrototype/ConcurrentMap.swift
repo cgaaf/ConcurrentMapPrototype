@@ -36,6 +36,8 @@ fileprivate actor ConcurrentContainer<T> {
 }
 
 extension Array {
+    // First attempt at an asyncronous map() implementation with concurrency using
+    // Swift's new concurrency features
     func concurrentMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
         let container = ConcurrentContainer<T>(count: self.count)
         
@@ -67,15 +69,5 @@ extension Array {
         // Retrieve the data in the correct order as an array
         print("Retrieve reordered transformed data")
         return await container.getArray()
-    }
-    
-    func asyncMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
-        var output = [T]()
-        for index in 0..<self.count {
-            print("Apply transform at index \(index)")
-            let newElement = await transform(self[index])
-            output.append(newElement)
-        }
-        return output
     }
 }
