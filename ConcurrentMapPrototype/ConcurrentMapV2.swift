@@ -41,6 +41,7 @@ extension Array {
         await withTaskGroup(of: (Int, T).self) { taskGroup in
             for index in 0 ..< self.count {
                 taskGroup.async {
+                    print("Transforming")
                     let newValue = await transform(self[index])
                     let tuple: (Int, T) = (index, newValue)
                     
@@ -54,5 +55,15 @@ extension Array {
         }
         
         return await holder.getArray()
+    }
+    
+    func asyncMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
+        var output = [T]()
+        for element in self {
+            print("Transforming")
+            let newElement = await transform(element)
+            output.append(newElement)
+        }
+        return output
     }
 }
