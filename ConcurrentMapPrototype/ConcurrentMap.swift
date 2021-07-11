@@ -38,6 +38,10 @@ fileprivate actor ConcurrentContainer<T> {
 extension Array {
     func concurrentMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
         let container = ConcurrentContainer<T>(count: self.count)
+        
+        // Create a TaskGroup to run transform at each index concurrently
+        // Transform should be a pure function
+        print("Creating Task Group")
         await withTaskGroup(of: (Int, T).self) { taskGroup in
             for index in 0 ..< self.count {
                 taskGroup.async {
@@ -49,11 +53,19 @@ extension Array {
                 }
             }
             
+            // Cache each index and associated value into the container actor
+            // The container will transform the unordered values back to the
+            // original order after the TaskGroup is completed
+            print("Cache results into container actor")
             for await result in taskGroup {
-                await container.setValue(result.1, for: result.0)
+                let (index, value) = result
+                print("Caching index \(index)")
+                await container.setValue(value, for: index)
             }
         }
         
+        // Retrieve the data in the correct order as an array
+        print("Retrieve reordered transformed data")
         return await container.getArray()
     }
     
