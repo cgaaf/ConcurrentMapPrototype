@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor CollectionHolder<T> {
+actor ConcurrentContainer<T> {
     let count: Int
     var dict = [Int: T]()
     
@@ -37,11 +37,11 @@ actor CollectionHolder<T> {
 
 extension Array {
     func concurrentMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
-        let holder = CollectionHolder<T>(count: self.count)
+        let container = ConcurrentContainer<T>(count: self.count)
         await withTaskGroup(of: (Int, T).self) { taskGroup in
             for index in 0 ..< self.count {
                 taskGroup.async {
-                    print("Transforming")
+                    print("Apply transform at index \(index)")
                     let newValue = await transform(self[index])
                     let tuple: (Int, T) = (index, newValue)
                     
@@ -50,18 +50,18 @@ extension Array {
             }
             
             for await result in taskGroup {
-                await holder.setValue(result.1, for: result.0)
+                await container.setValue(result.1, for: result.0)
             }
         }
         
-        return await holder.getArray()
+        return await container.getArray()
     }
     
     func asyncMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
         var output = [T]()
-        for element in self {
-            print("Transforming")
-            let newElement = await transform(element)
+        for index in 0..<self.count {
+            print("Apply transform at index \(index)")
+            let newElement = await transform(self[index])
             output.append(newElement)
         }
         return output
