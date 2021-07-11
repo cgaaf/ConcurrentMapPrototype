@@ -11,8 +11,7 @@
 		C241278D269A0E9A0035D542 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C241278C269A0E9A0035D542 /* ContentView.swift */; };
 		C241278F269A0E9B0035D542 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C241278E269A0E9B0035D542 /* Assets.xcassets */; };
 		C2412792269A0E9B0035D542 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2412791269A0E9B0035D542 /* Preview Assets.xcassets */; };
-		C2412799269A0EC10035D542 /* ConcurrentMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2412798269A0EC10035D542 /* ConcurrentMap.swift */; };
-		C241279B269A62F00035D542 /* ConcurrentMapV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C241279A269A62F00035D542 /* ConcurrentMapV2.swift */; };
+		C241279B269A62F00035D542 /* ConcurrentMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C241279A269A62F00035D542 /* ConcurrentMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,8 +20,7 @@
 		C241278C269A0E9A0035D542 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C241278E269A0E9B0035D542 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C2412791269A0E9B0035D542 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C2412798269A0EC10035D542 /* ConcurrentMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentMap.swift; sourceTree = "<group>"; };
-		C241279A269A62F00035D542 /* ConcurrentMapV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentMapV2.swift; sourceTree = "<group>"; };
+		C241279A269A62F00035D542 /* ConcurrentMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentMap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +57,7 @@
 				C241278C269A0E9A0035D542 /* ContentView.swift */,
 				C241278E269A0E9B0035D542 /* Assets.xcassets */,
 				C2412790269A0E9B0035D542 /* Preview Content */,
-				C2412798269A0EC10035D542 /* ConcurrentMap.swift */,
-				C241279A269A62F00035D542 /* ConcurrentMapV2.swift */,
+				C241279A269A62F00035D542 /* ConcurrentMap.swift */,
 			);
 			path = ConcurrentMapPrototype;
 			sourceTree = "<group>";
@@ -144,8 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C241278D269A0E9A0035D542 /* ContentView.swift in Sources */,
-				C241279B269A62F00035D542 /* ConcurrentMapV2.swift in Sources */,
-				C2412799269A0EC10035D542 /* ConcurrentMap.swift in Sources */,
+				C241279B269A62F00035D542 /* ConcurrentMap.swift in Sources */,
 				C241278B269A0E9A0035D542 /* ConcurrentMapPrototypeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

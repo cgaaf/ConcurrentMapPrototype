@@ -1,5 +1,5 @@
 //
-//  Concurrentap.swift
+//  ConcurrentMapV2.swift
 //  ConcurrentMapPrototype
 //
 //  Created by Chris Gaafary on 7/10/21.
@@ -7,38 +7,63 @@
 
 import Foundation
 
-extension Array {
-    func concurrentMap<T>(_ transform: @escaping (Element) -> T) async -> [T] {
-        let mutable = MutableType<Element, T>(inputArray: self)
-        return await mutable.concurrentMap(transform)
+actor CollectionHolder<T> {
+    let count: Int
+    var dict = [Int: T]()
+    
+    init(count: Int) {
+        self.count = count
+    }
+    
+    func setValue(_ value: T, for key: Int) {
+        self.dict[key] = value
+    }
+    
+    func getArray() -> [T] {
+        guard dict.count == count else {
+            fatalError("Dict count does not match expected output count")
+        }
+        
+        let resorted = dict.sorted { $0.key < $1.key}
+        
+        var output = [T]()
+        resorted.forEach { (key, value) in
+            output.append(value)
+        }
+        
+        return output
     }
 }
 
-actor MutableType<InputType, OutputType> {
-    var inputArray: [InputType]
-    private(set) var dictionary = [Int : OutputType]()
-    private(set) var outputArray = [OutputType]()
-    
-    init(inputArray: [InputType]) {
-        self.inputArray = inputArray
-    }
-    
-    func concurrentMap(_ transform: @escaping (InputType) -> OutputType) async -> [OutputType] {
-        for index in 0 ..< inputArray.count {
-            dictionary[index] = transform(inputArray[index])
-            DispatchQueue.main.async {
-                
+extension Array {
+    func concurrentMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
+        let holder = CollectionHolder<T>(count: self.count)
+        await withTaskGroup(of: (Int, T).self) { taskGroup in
+            for index in 0 ..< self.count {
+                taskGroup.async {
+                    print("Transforming")
+                    let newValue = await transform(self[index])
+                    let tuple: (Int, T) = (index, newValue)
+                    
+                    return tuple
+                }
+            }
+            
+            for await result in taskGroup {
+                await holder.setValue(result.1, for: result.0)
             }
         }
         
-        let sortedDictionary = dictionary.sorted {
-            $0.key < $1.key
+        return await holder.getArray()
+    }
+    
+    func asyncMap<T>(_ transform: @escaping (Element) async -> T) async -> [T] {
+        var output = [T]()
+        for element in self {
+            print("Transforming")
+            let newElement = await transform(element)
+            output.append(newElement)
         }
-        
-        sortedDictionary.forEach {
-            outputArray.append($0.value)
-        }
-        
-        return outputArray
+        return output
     }
 }
