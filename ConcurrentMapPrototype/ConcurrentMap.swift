@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor ConcurrentContainer<T> {
+fileprivate actor ConcurrentContainer<T> {
     let count: Int
     var dict = [Int: T]()
     
